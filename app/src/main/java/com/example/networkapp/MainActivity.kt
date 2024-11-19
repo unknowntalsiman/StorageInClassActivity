@@ -16,7 +16,8 @@ import com.squareup.picasso.Picasso
 import org.json.JSONObject
 
 // TODO (1: Fix any bugs)
-// TODO (2: Add function saveComic(...) to save and load comic info automatically when app starts)
+// TODO (2: Add function saveComic(...) to save comic info when downloaded
+// TODO (3: Automatically load previously saved comic when app starts)
 
 class MainActivity : AppCompatActivity() {
 
@@ -45,18 +46,27 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    // Fetches comic from web as JSONObject
     private fun downloadComic (comicId: String) {
         val url = "https://xkcd.com/$comicId/info.0.json"
         requestQueue.add (
-            JsonObjectRequest(url, {showComic(it)}, {
-            })
+            JsonObjectRequest(url
+                , {showComic(it)}
+                , {}
+            )
         )
     }
 
+    // Display a comic for a given comic JSON object
     private fun showComic (comicObject: JSONObject) {
         titleTextView.text = comicObject.getString("title")
         descriptionTextView.text = comicObject.getString("alt")
         Picasso.get().load(comicObject.getString("img")).into(comicImageView)
+    }
+
+    // Implement this function
+    private fun saveComic(comicObject: JSONObject) {
+
     }
 
 
